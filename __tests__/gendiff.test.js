@@ -1,6 +1,6 @@
 // @ts-check
 import { test, expect } from '@jest/globals';
-import { compareObjects } from '../gendiff.js';
+import { compareObjects } from '../src/calcdiff.js';
 
 const res1 = '{\n}';
 const res2 = '{\n  - name: vasya\n}';
