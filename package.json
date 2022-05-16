@@ -21,7 +21,7 @@
     "lodash": "^4.17.21"
   },
   "bin": {
-    "gendiff": "./bin/gendiff.js"
+    "gendiff": "bin/gendiff.js"
   },
   "type": "module",
   "devDependencies": {

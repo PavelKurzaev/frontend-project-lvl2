@@ -8,4 +8,4 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/1282261f9d792f6a8330/maintainability)](https://codeclimate.com/github/PavelKurzaev/frontend-project-lvl2/maintainability)
 
 ### CodeClimate Test coverage
-[![Maintainability](https://api.codeclimate.com/v1/badges/1282261f9d792f6a8330/test_coverage)](https://codeclimate.com/github/PavelKurzaev/frontend-project-lvl2/test_coverage)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/1282261f9d792f6a8330/test_coverage)](https://codeclimate.com/github/PavelKurzaev/frontend-project-lvl2/test_coverage)
