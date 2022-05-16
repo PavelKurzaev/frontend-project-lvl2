@@ -54,15 +54,41 @@ const compareObjects = (obj1, obj2) => {
 };
 
 import { cwd } from 'process';
-import { resolve } from 'path';
+import path, { resolve } from 'path';
 import { readFileSync } from 'node:fs';
+import { load } from 'js-yaml';
 
 const genDiff = (file1, file2) => {
   const str1 = readFileSync(resolve(cwd(), file1), { encoding:'ascii', flag:'r' });
   const str2 = readFileSync(resolve(cwd(), file2), { encoding:'ascii', flag:'r' });
+
+  let obj1;
+  let obj2;
+  switch (path.parse(file1).ext) {
+    case '.jsn':
+    case '.json':
+      obj1 = _.sortBy(Object.entries(JSON.parse(str1)), (o) => o[0]);
+      break;
+    case '.yml':
+    case '.yaml':
+      obj1 = _.sortBy(Object.entries(load(str1)), (o) => o[0]);
+      break;
+    default:
+      break;
+  }
+  switch (path.parse(file2).ext) {
+    case '.jsn':
+    case '.json':
+      obj2 = _.sortBy(Object.entries(JSON.parse(str2)), (o) => o[0]);
+      break;
+    case '.yml':
+    case '.yaml':
+      obj2 = _.sortBy(Object.entries(load(str2)), (o) => o[0]);
+      break;
+    default:
+      break;
+  }
   
-  const obj1 = _.sortBy(Object.entries(JSON.parse(str1)), (o) => o[0]);
-  const obj2 = _.sortBy(Object.entries(JSON.parse(str2)), (o) => o[0]);
   
   return compareObjects(obj1, obj2);
 };
