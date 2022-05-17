@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import _ from 'lodash';
+import { printResult } from '../formatters/index.js';
 
-const INDENT = '    ';
 /*
 const printArrayPairs = (obj) => {
   const res = [];
@@ -63,65 +63,38 @@ const compareObjects = (obj1, obj2) => {
   return result;
 };
 
-const printStylish = (result, level = 0) => {
-  const strArray = [];
-  strArray.push(`{`);
-  result.reduce((acc, elem) => {
-    if (Array.isArray(elem.value)) {
-      acc.push(`${INDENT.repeat(level)}  ${elem.action} ${elem.key}: ${printStylish(elem.value, level + 1)}`);
-    } else {
-      acc.push(`${INDENT.repeat(level)}  ${elem.action} ${elem.key}: ${elem.value}`);
-    }
-    return acc;
-  }, strArray);
-  if (level === 0) strArray.push('}');
-  else strArray.push(`${INDENT.repeat(level)}}`)
-  return strArray.join('\n');
-};
-
-const printResult = (result, outputStyle) => {
-  switch (outputStyle) {
-  case 'fancy':
-    break;
-  case 'stylish':
-  default:
-    printStylish(result);
-    break;
-  }
-}
-
 import { cwd } from 'process';
 import path, { resolve } from 'path';
 import { readFileSync } from 'node:fs';
 import { load as YAMLparse } from 'js-yaml';
 
-const genDiff = (file1, file2, outputStyle) => {
-  const parseStr = (str, type) => {
-    let obj;
-    switch (type) {
-      case '.jsn':
-      case '.json':
-        obj = Object.entries(JSON.parse(str));
-        break;
-      case '.yml':
-      case '.yaml':
-        obj = Object.entries(YAMLparse(str));
-        break;
-      default:
-        break;
-    }
-    return obj;
+const parseStr = (str, type) => {
+  let obj;
+  switch (type) {
+    case '.jsn':
+    case '.json':
+      obj = Object.entries(JSON.parse(str));
+      break;
+    case '.yml':
+    case '.yaml':
+      obj = Object.entries(YAMLparse(str));
+      break;
+    default:
+      break;
   }
+  return obj;
+}
 
-  const objectToArray = (o) => Object.entries(o).map((e) => {
-    if (_.isObject(e[1])) e[1] = objectToArray(e[1]);
-    return e;
-  });
+const objectToArray = (o) => Object.entries(o).map((e) => {
+  if (_.isObject(e[1])) e[1] = objectToArray(e[1]);
+  return e;
+});
 
-  const parseObject = (object) => {
-    return object.map((elem) => _.isObject(elem[1]) ? [elem[0], [...objectToArray(elem[1])]] : elem);
-  };
+const parseObject = (object) => {
+  return object.map((elem) => _.isObject(elem[1]) ? [elem[0], [...objectToArray(elem[1])]] : elem);
+};
 
+const genDiff = (file1, file2, outputStyle) => {
   const str1 = readFileSync(resolve(cwd(), file1), { encoding:'ascii', flag:'r' });
   const str2 = readFileSync(resolve(cwd(), file2), { encoding:'ascii', flag:'r' });
 
