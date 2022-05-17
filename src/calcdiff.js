@@ -52,33 +52,26 @@ const genDiff = (file1, file2) => {
   const str1 = readFileSync(resolve(cwd(), file1), { encoding:'ascii', flag:'r' });
   const str2 = readFileSync(resolve(cwd(), file2), { encoding:'ascii', flag:'r' });
 
-  let obj1;
-  let obj2;
+  const parseStr = (str, type) => {
+    let obj;
+    switch (type) {
+      case '.jsn':
+      case '.json':
+        obj = Object.entries(JSON.parse(str));
+        break;
+      case '.yml':
+      case '.yaml':
+        obj = Object.entries(YAMLparse(str));
+        break;
+      default:
+        break;
+    }
+    return obj;
+  }
 
-  switch (path.parse(file1).ext) {
-    case '.jsn':
-    case '.json':
-      obj1 = Object.entries(JSON.parse(str1));
-      break;
-    case '.yml':
-    case '.yaml':
-      obj1 = Object.entries(YAMLparse(str1));
-      break;
-    default:
-      break;
-  }
-  switch (path.parse(file2).ext) {
-    case '.jsn':
-    case '.json':
-      obj2 = Object.entries(JSON.parse(str2));
-      break;
-    case '.yml':
-    case '.yaml':
-      obj2 = Object.entries(YAMLparse(str2));
-      break;
-    default:
-      break;
-  }
+  const obj1 = parseStr(str1, path.parse(file1).ext);
+  const obj2 = parseStr(str2, path.parse(file2).ext);
+
   return printResult(compareObjects(obj1, obj2));
 };
 
