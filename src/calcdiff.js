@@ -1,62 +1,52 @@
 #!/usr/bin/env node
 
-import _ from 'lodash';
-
 const INDENT = '  ';
 
 const compareObjects = (obj1, obj2) => {
   const result = [];
-  result.push('{');
 
-  const listObject = (obj, symbol = ' ') => {
-    obj.map((elem) => result.push(`${INDENT}${symbol} ${elem[0]}: ${elem[1]}`));
-  };
-  
-  if (obj1.length === 0 && obj2.length === 0) return '{\n}';
-  if (obj1.length === 0 && obj2.length !== 0) {
-    listObject(obj2, '+');
-  } else if (obj1.length !== 0 && obj2.length === 0) {
-    listObject(obj1, '-');
-  } else {
-    let i2 = 0;
-    let [name2, value2] = obj2[0];
-
-    for (const [name1, value1] of obj1) {
-      if (i2 < obj2.length) {
-        [name2, value2] = obj2[i2];
-        while (i2 < obj2.length && name1.localeCompare(name2) > 0) {
-          result.push(`${INDENT}+ ${name2}: ${value2}`);
-          i2 += 1;
-        }
-      }
-      if (name1.localeCompare(name2) < 0) {
-        result.push(`${INDENT}- ${name1}: ${value1}`);
-      } else if (name1.localeCompare(name2) === 0) {
-        if (value1 == value2) {
-          result.push(`${INDENT}  ${name1}: ${value1}`);
-        } else {
-          result.push(`${INDENT}- ${name1}: ${value1}`);
-          result.push(`${INDENT}+ ${name2}: ${value2}`);
-        }
-        i2 += 1;
-      }
+  obj1.map((elem) => {
+    const [key, value] = elem;
+    const found = obj2.filter((elem2) => elem2[0] === key && elem2[1] === value).length;
+    if (found === 1) { 
+      result.push({ action: ' ', key, value });
+    } else {
+      result.push({ action: '-', key, value });
     }
-  
-    while (i2 < obj2.length) {
-      [name2, value2] = obj2[i2];
-      result.push(`${INDENT}+ ${name2}: ${value2}`);
-      i2 += 1;
-    }
-  }
+  });
 
-  result.push('}');
-  return result.join('\n');
+  obj2.map((elem) => {
+    const [key, value] = elem;
+    const found = obj1.filter((elem1) => elem1[0] === key && elem1[1] === value).length;
+    if (found !== 1) {
+      result.push({ action: '+', key, value });
+    }
+  });
+
+  result.sort((a, b) => {
+    if (a.key < b.key) return -1;
+    if (a.key === b.key) return a.action > b.action ? -1 : 1;
+    return 1;
+  });
+
+  return result;
+};
+
+const printResult = (result) => {
+  const strArray = [];
+  strArray.push('{');
+  result.reduce((acc, elem) => {
+    acc.push(`${INDENT}${elem.action} ${elem.key}: ${elem.value}`);
+    return acc;
+  }, strArray);
+  strArray.push('}');
+  return strArray.join('\n');
 };
 
 import { cwd } from 'process';
 import path, { resolve } from 'path';
 import { readFileSync } from 'node:fs';
-import { load } from 'js-yaml';
+import { load as YAMLparse } from 'js-yaml';
 
 const genDiff = (file1, file2) => {
   const str1 = readFileSync(resolve(cwd(), file1), { encoding:'ascii', flag:'r' });
@@ -64,14 +54,15 @@ const genDiff = (file1, file2) => {
 
   let obj1;
   let obj2;
+
   switch (path.parse(file1).ext) {
     case '.jsn':
     case '.json':
-      obj1 = _.sortBy(Object.entries(JSON.parse(str1)), (o) => o[0]);
+      obj1 = Object.entries(JSON.parse(str1));
       break;
     case '.yml':
     case '.yaml':
-      obj1 = _.sortBy(Object.entries(load(str1)), (o) => o[0]);
+      obj1 = Object.entries(YAMLparse(str1));
       break;
     default:
       break;
@@ -79,18 +70,16 @@ const genDiff = (file1, file2) => {
   switch (path.parse(file2).ext) {
     case '.jsn':
     case '.json':
-      obj2 = _.sortBy(Object.entries(JSON.parse(str2)), (o) => o[0]);
+      obj2 = Object.entries(JSON.parse(str2));
       break;
     case '.yml':
     case '.yaml':
-      obj2 = _.sortBy(Object.entries(load(str2)), (o) => o[0]);
+      obj2 = Object.entries(YAMLparse(str2));
       break;
     default:
       break;
   }
-  
-  
-  return compareObjects(obj1, obj2);
+  return printResult(compareObjects(obj1, obj2));
 };
 
-export { genDiff, compareObjects };
+export { genDiff, compareObjects, printResult };
