@@ -57,3 +57,10 @@ test('gendiff file recursive', () => {
   const result = genDiff(getFixturePath('file11.json'), getFixturePath('file12.json'));
   expect(result).toEqual(expected);
 });
+
+test('gendiff file recursive yaml', () => {
+  const expected = readFileSync(getFixturePath('result2.txt'), 'utf-8');
+
+  const result = genDiff(getFixturePath('file11.json'), getFixturePath('file12.yml'));
+  expect(result).toEqual(expected);
+});
