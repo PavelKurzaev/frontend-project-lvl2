@@ -2,7 +2,7 @@
 import _ from 'lodash';
 
 const INDENT = '    ';
-
+/*
 const printArrayPairs = (obj) => {
   const res = [];
   res.push('[');
@@ -18,7 +18,7 @@ const printArrayPairs = (obj) => {
   res.push('] ');
   return res.join(' ');
 };
-
+*/
 const compareObjects = (obj1, obj2) => {
   const result = [];
 
