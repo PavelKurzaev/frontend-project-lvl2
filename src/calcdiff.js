@@ -63,12 +63,12 @@ const compareObjects = (obj1, obj2) => {
   return result;
 };
 
-const printResult = (result, level = 0) => {
+const printStylish = (result, level = 0) => {
   const strArray = [];
   strArray.push(`{`);
   result.reduce((acc, elem) => {
     if (Array.isArray(elem.value)) {
-      acc.push(`${INDENT.repeat(level)}  ${elem.action} ${elem.key}: ${printResult(elem.value, level + 1)}`);
+      acc.push(`${INDENT.repeat(level)}  ${elem.action} ${elem.key}: ${printStylish(elem.value, level + 1)}`);
     } else {
       acc.push(`${INDENT.repeat(level)}  ${elem.action} ${elem.key}: ${elem.value}`);
     }
@@ -79,12 +79,23 @@ const printResult = (result, level = 0) => {
   return strArray.join('\n');
 };
 
+const printResult = (result, outputStyle) => {
+  switch (outputStyle) {
+  case 'fancy':
+    break;
+  case 'stylish':
+  default:
+    printStylish(result);
+    break;
+  }
+}
+
 import { cwd } from 'process';
 import path, { resolve } from 'path';
 import { readFileSync } from 'node:fs';
 import { load as YAMLparse } from 'js-yaml';
 
-const genDiff = (file1, file2) => {
+const genDiff = (file1, file2, outputStyle) => {
   const parseStr = (str, type) => {
     let obj;
     switch (type) {
@@ -121,7 +132,8 @@ const genDiff = (file1, file2) => {
   console.log('object2', printArrayPairs(obj2));
   */
   const objCompRes = compareObjects(obj1, obj2);
-  return printResult(objCompRes);
+
+  return printResult(objCompRes, outputStyle);
 };
 
 export { genDiff, compareObjects, printResult };
