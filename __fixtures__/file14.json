@@ -1,0 +1,9 @@
+{
+  "test": "SJON Test",
+  "common": {
+    "setting1": "Kurzaev",
+    "setting2": {
+        "name": "Pavel"
+    }
+  }
+}
