@@ -11,8 +11,7 @@ const printStylish = (result, level = 0) => {
       }
       return acc;
     }, strArray);
-    if (level === 0) strArray.push('}');
-    else strArray.push(`${INDENT.repeat(level)}}`)
+    strArray.push(`${INDENT.repeat(level)}}`)
     return strArray.join('\n');
   };
   
