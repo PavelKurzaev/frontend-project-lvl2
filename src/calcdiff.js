@@ -100,10 +100,6 @@ const genDiff = (file1, file2, outputStyle) => {
 
   const obj1 = parseObject(parseStr(str1, path.parse(file1).ext));
   const obj2 = parseObject(parseStr(str2, path.parse(file2).ext));
-  /*
-  console.log('object1', printArrayPairs(obj1));
-  console.log('object2', printArrayPairs(obj2));
-  */
   const objCompRes = compareObjects(obj1, obj2);
 
   return printResult(objCompRes, outputStyle);
