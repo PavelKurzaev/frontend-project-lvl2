@@ -105,4 +105,4 @@ const genDiff = (file1, file2, outputStyle) => {
   return printResult(objCompRes, outputStyle);
 };
 
-export { genDiff, compareObjects, printResult };
+export default genDiff;
