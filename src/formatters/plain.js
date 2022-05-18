@@ -15,31 +15,24 @@ const makeValue = (object) => {
   return value;
 }
 
-const printPlain = (result, parent = '') => {
+const printPlain = (array, parent = '') => {
   const strArray = [];
-  result.reduce((acc, elem, index, array) => {
-    const hasMinus = array.filter((e) => (e.key === elem.key && e.action === '-'));
-    const hasPlus = array.filter((e) => (e.key === elem.key && e.action === '+'));
-    const value = makeValue(elem.value);
 
+  array.reduce((acc, elem) => {
+    const value = makeValue(elem.value);
     switch (elem.action) {
-    case '+':
-      if (hasMinus.length === 0) {
+      case 'add':
         acc.push(`Property '${parent}${elem.key}' was added with value: ${value}`);
-      } else {
-        const minusValue = makeValue(hasMinus[0].value);
-        acc.push(`Property '${parent}${elem.key}' was updated. From ${minusValue} to ${value}`);
-      }
-      break;
-    case '-':
-      if (hasPlus.length === 0) {
+        break;
+      case 'different':
+        acc.push(`Property '${parent}${elem.key}' was updated. From ${makeValue(elem.oldValue)} to ${value}`);
+        break;
+      case 'delete':
         acc.push(`Property '${parent}${elem.key}' was removed`);
-      }
-      break;
-    }
-    if (Array.isArray(elem.value)) {
-      const plainArray = printPlain(elem.value, `${parent}${elem.key}.`);
-      acc.push([...plainArray]);
+        break;
+      case 'nested':
+        acc.push([...printPlain(elem.children, `${parent}${elem.key}.`)]);
+        break;
     }
     return acc;
   }, strArray);
