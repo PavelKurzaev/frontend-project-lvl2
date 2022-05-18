@@ -6,24 +6,32 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: install
       run: make install
-      
+
     - name: lint
       run: make lint
 
     - name: test
       run: make test
 
-    - name: publish code coverage to code-climate (duh)
-      uses: paambaati/codeclimate-action@v3.0.0
-      env:
-        CC_TEST_REPORTER_ID: {{ secrets.CC_TEST_REPORTER_ID }}
+  coverage:
+    needs: [ build ]
+    name: coverage
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@master
       with:
-        debug: true
-      if: ${{ github.event_name == 'push' }}
+        node-version: '18'
+    - run: npm install -g yarn
+    - run: yarn install
+    - run: yarn build
+    - uses: paambaati/codeclimate-action@v2.2.4
+      env:
+        CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      with:
+        coverageCommand: yarn coverage
