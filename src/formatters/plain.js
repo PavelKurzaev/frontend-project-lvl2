@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 const makeValue = (object) => {
   if (object === null) return null;
 
@@ -15,7 +17,7 @@ const makeValue = (object) => {
   return value;
 }
 
-const printPlain = (array, parent = '') => {
+const printToArray = (array, parent = '') => {
   const strArray = [];
 
   array.reduce((acc, elem) => {
@@ -31,12 +33,14 @@ const printPlain = (array, parent = '') => {
         acc.push(`Property '${parent}${elem.key}' was removed`);
         break;
       case 'nested':
-        acc.push([...printPlain(elem.children, `${parent}${elem.key}.`)]);
+        acc.push([...printToArray(elem.children, `${parent}${elem.key}.`)]);
         break;
     }
     return acc;
   }, strArray);
-  return strArray;
+  return _.flatten(strArray);
 };
+
+const printPlain = (diff) => printToArray(diff).join('\n');
 
 export { printPlain };

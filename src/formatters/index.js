@@ -5,9 +5,9 @@ import { printJSON } from './json.js';
 const printResult = (result, outputStyle) => {
   switch (outputStyle) {
   case 'json':
-    return printJSON(result).flat(10).join('\n');
+    return printJSON(result);
   case 'plain':
-    return printPlain(result).flat(10).join('\n');
+    return printPlain(result);
   case 'stylish':
   default:
     return printStylish(result);

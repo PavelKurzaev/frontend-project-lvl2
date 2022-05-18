@@ -23,7 +23,7 @@ const compareObjects = (obj1, obj2) => {
       return { key, action: 'different', oldValue: val1, value: val2 };
     }
   }).sort((a, b) => a.key.localeCompare(b.key));
-  console.log(JSON.stringify(result));
+//  console.log(JSON.stringify(result));
   return result;
 };
 
