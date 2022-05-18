@@ -5,7 +5,7 @@
 [![Git test](https://github.com/PavelKurzaev/frontend-project-lvl2/workflows/Git_Test/badge.svg)](https://github.com/PavelKurzaev/frontend-project-lvl2/actions)
 
 ### CodeClimate Maintainability test
-[![Maintainability](https://api.codeclimate.com/v1/badges/1282261f9d792f6a8330/maintainability)](https://codeclimate.com/github/PavelKurzaev/frontend-project-lvl2/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/1282261f9d792f6a8330/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
 
 ### CodeClimate Test coverage
-[![Test Coverage](https://api.codeclimate.com/v1/badges/1282261f9d792f6a8330/test_coverage)](https://codeclimate.com/github/PavelKurzaev/frontend-project-lvl2/test_coverage)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/1282261f9d792f6a8330/test_coverage)](https://codeclimate.com/github/codeclimate/codeclimate/test_coverage)
