@@ -47,5 +47,8 @@ test('gendiff file recursive yaml plain', () => {
 
 test('gendiff file recursive json', () => {
   const result = genDiff(getFixturePath('file11.json'), getFixturePath('file12.yml'), 'json');
+  const expected = readFileSync(getFixturePath('result4.txt'), 'utf-8');
+
   expect(() => JSON.parse(result)).not.toThrow();
+  expect(JSON.parse(result)).toEqual(JSON.parse(expected));
 });
