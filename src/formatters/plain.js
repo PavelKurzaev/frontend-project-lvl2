@@ -1,11 +1,9 @@
-//import _ from 'lodash';
-
 const makeValue = (object) => {
   if (object === null) return null;
   if (typeof object === 'string') return `'${object}'`;
   if (typeof object === 'object') return '[complex value]';
   return object;
-}
+};
 
 const printPlain = (array, parent = '') => {
   const mapped = array.filter((e) => e.action !== 'same').map((elem) => {
@@ -20,8 +18,8 @@ const printPlain = (array, parent = '') => {
       case 'nested':
         return `${printPlain(elem.children, `${parent}${elem.key}.`)}`;
       default:
-        break;
-    }
+        return `error action`;
+      }
   });
   return mapped.join('\n');
 };

@@ -10,10 +10,9 @@ const printObject = (obj, level = 0) => {
   const mapped = Object.keys(obj).map((key) => {
     if (_.isObject(obj[key])) {
       return `${indent}    ${key}: ${printObject(obj[key], level + 1)}`;
-    } else {
-      return `${indent}    ${key}: ${obj[key]}`;
     }
-  }); 
+    return `${indent}    ${key}: ${obj[key]}`;
+  });
   res.push(mapped.join('\n'));
   res.push(`${indent}}`);
   return res.join('\n');

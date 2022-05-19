@@ -1,6 +1,6 @@
-import  printStylish  from './stylish.js';
-import  printPlain  from './plain.js';
-import  printJSON  from './json.js';
+import printStylish from './stylish.js';
+import printPlain from './plain.js';
+import printJSON from './json.js';
 
 const printResult = (result, outputStyle) => {
   switch (outputStyle) {
@@ -11,6 +11,6 @@ const printResult = (result, outputStyle) => {
     default:
       return printStylish(result);
   }
-}
+};
 
 export default printResult;

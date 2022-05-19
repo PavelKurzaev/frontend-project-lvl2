@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import { cwd } from 'process';
 import path, { resolve } from 'path';
-import { readFileSync } from 'node:fs';
+import { readFileSync } from 'fs';
 import jsYaml from 'js-yaml';
 
-import  printResult from './formatters/index.js';
+import printResult from './formatters/index.js';
 
 const compareObjects = (obj1, obj2) => {
   const union = _.union(Object.keys(obj1), Object.keys(obj2));
@@ -23,31 +23,29 @@ const compareObjects = (obj1, obj2) => {
     }
     if (val1 === obj2[key]) {
       return { key, action: 'same', value: val1 };
-    } else {
-      return { key, action: 'different', oldValue: val1, value: val2 };
-    }
-  }).sort((a, b) => a.key.localeCompare(b.key));
-  return result;
+    } 
+    return { key, action: 'different', oldValue: val1, value: val2 };
+  });
+  return _.sortBy(result, (e) => e.key);
 };
 
 const parseStr = (str, type) => {
   if (type === '.jsn' || type === '.json') {
     return JSON.parse(str);
-  } else if (type === '.yml' || type === '.yaml') {
+  } 
+  if (type === '.yml' || type === '.yaml') {
     return jsYaml.load(str);
   }
   return null;
-}
+};
 
 const genDiff = (file1, file2, outputStyle) => {
-  const str1 = readFileSync(resolve(cwd(), file1), { encoding:'ascii', flag:'r' });
-  const str2 = readFileSync(resolve(cwd(), file2), { encoding:'ascii', flag:'r' });
+  const str1 = readFileSync(resolve(cwd(), file1), { encoding: 'ascii', flag: 'r' });
+  const str2 = readFileSync(resolve(cwd(), file2), { encoding: 'ascii', flag: 'r' });
 
   const obj1 = parseStr(str1, path.parse(file1).ext);
   const obj2 = parseStr(str2, path.parse(file2).ext);
 
-//  console.log(obj1);
-//  console.log(obj2);
   const objCompRes = compareObjects(obj1, obj2);
 
   return printResult(objCompRes, outputStyle);
