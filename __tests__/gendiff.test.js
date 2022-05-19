@@ -10,7 +10,7 @@ const __dirname = dirname(__filename);
 
 const getFixturePath = (filename) => join(__dirname, '..', '__fixtures__', filename);
 
-/*
+
 test('gendiff file test json', () => {
   const expected = readFileSync(getFixturePath('result.txt'), 'utf-8');
 
@@ -38,7 +38,7 @@ test('gendiff file recursive yaml', () => {
   const result = genDiff(getFixturePath('file11.json'), getFixturePath('file12.yml'));
   expect(result).toEqual(expected);
 });
-*/
+
 test('gendiff file recursive yaml plain', () => {
   const expected = readFileSync(getFixturePath('result3.txt'), 'utf-8');
 

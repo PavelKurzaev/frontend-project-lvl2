@@ -2,19 +2,9 @@ import _ from 'lodash';
 
 const makeValue = (object) => {
   if (object === null) return null;
-
-  let value;
-  switch (typeof object) {
-    case 'string': 
-      value = `'${object}'`;
-      break;
-    case 'object':
-      value = '[complex value]';
-      break;
-    default:
-      value = object
-  }
-  return value;
+  if (typeof object === 'string') return `'${object}'`;
+  if (typeof object === 'object') return '[complex value]';
+  return object;
 }
 
 const printToArray = (array, parent = '') => {

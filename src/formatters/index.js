@@ -8,7 +8,6 @@ const printResult = (result, outputStyle) => {
     return printJSON(result);
   case 'plain':
     return printPlain(result);
-  case 'stylish':
   default:
     return printStylish(result);
   }
