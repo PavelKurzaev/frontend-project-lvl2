@@ -23,8 +23,8 @@ const compareObjects = (obj1, obj2) => {
     }
     if (val1 === obj2[key]) {
       return { key, action: 'same', value: val1 };
-    } 
-    return { key, action: 'different', oldValue: val1, value: val2 };
+    }
+    return ({ key, action: 'different', oldValue: val1, value: val2 });
   });
   return _.sortBy(result, (e) => e.key);
 };
@@ -32,7 +32,7 @@ const compareObjects = (obj1, obj2) => {
 const parseStr = (str, type) => {
   if (type === '.jsn' || type === '.json') {
     return JSON.parse(str);
-  } 
+  }
   if (type === '.yml' || type === '.yaml') {
     return jsYaml.load(str);
   }
