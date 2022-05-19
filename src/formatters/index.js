@@ -13,4 +13,4 @@ const printResult = (result, outputStyle) => {
   }
 }
 
-export { printResult };
+export default printResult;
