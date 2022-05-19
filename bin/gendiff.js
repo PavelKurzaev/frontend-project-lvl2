@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 import { Command, Option } from 'commander';
 import genDiff from '../src/gendiff.js';
 

@@ -1,6 +1,10 @@
-#!/usr/bin/env node
 import _ from 'lodash';
-import { printResult } from './formatters/index.js';
+import { cwd } from 'process';
+import path, { resolve } from 'path';
+import { readFileSync } from 'node:fs';
+import jsYaml from 'js-yaml';
+
+import  printResult from './formatters/index.js';
 
 const compareObjects = (obj1, obj2) => {
   const union = _.union(Object.keys(obj1), Object.keys(obj2));
@@ -25,11 +29,6 @@ const compareObjects = (obj1, obj2) => {
   }).sort((a, b) => a.key.localeCompare(b.key));
   return result;
 };
-
-import { cwd } from 'process';
-import path, { resolve } from 'path';
-import { readFileSync } from 'node:fs';
-import jsYaml from 'js-yaml';
 
 const parseStr = (str, type) => {
   if (type === '.jsn' || type === '.json') {

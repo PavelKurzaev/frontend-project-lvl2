@@ -1,4 +1,4 @@
-import _ from 'lodash';
+//import _ from 'lodash';
 
 const makeValue = (object) => {
   if (object === null) return null;
@@ -8,29 +8,24 @@ const makeValue = (object) => {
 }
 
 const printToArray = (array, parent = '') => {
-  const strArray = [];
-
-  array.reduce((acc, elem) => {
+  const mapped = array.map((elem) => {
     const value = makeValue(elem.value);
     switch (elem.action) {
       case 'add':
-        acc.push(`Property '${parent}${elem.key}' was added with value: ${value}`);
-        break;
+        return `Property '${parent}${elem.key}' was added with value: ${value}`;
       case 'different':
-        acc.push(`Property '${parent}${elem.key}' was updated. From ${makeValue(elem.oldValue)} to ${value}`);
-        break;
+        return `Property '${parent}${elem.key}' was updated. From ${makeValue(elem.oldValue)} to ${value}`;
       case 'delete':
-        acc.push(`Property '${parent}${elem.key}' was removed`);
-        break;
+        return `Property '${parent}${elem.key}' was removed`;
       case 'nested':
-        acc.push([...printToArray(elem.children, `${parent}${elem.key}.`)]);
+        return `${printToArray(elem.children, `${parent}${elem.key}.`)}`;
+      default:
         break;
     }
-    return acc;
-  }, strArray);
-  return _.flatten(strArray);
+  });
+  return mapped.join('\n');
 };
 
 const printPlain = (diff) => printToArray(diff).join('\n');
 
-export { printPlain };
+export default printPlain;

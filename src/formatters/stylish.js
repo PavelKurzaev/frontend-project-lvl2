@@ -51,4 +51,4 @@ const printStylish = (diff) => {
   return res.join('\n');
 }
 
-export { printStylish };
+export default printStylish;
