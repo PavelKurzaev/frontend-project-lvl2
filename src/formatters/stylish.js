@@ -3,7 +3,6 @@ import _ from 'lodash';
 const INDENT = 4;
 
 const printObject = (obj, level = 0) => {
-  const res = ['{', ' ', '}'];
   const indent = ' '.repeat(level * INDENT);
 
   const mapped = Object.keys(obj).map((key) => {
@@ -12,9 +11,7 @@ const printObject = (obj, level = 0) => {
     }
     return `${indent}    ${key}: ${obj[key]}`;
   });
-  res[1] = mapped.join('\n');
-  res[2] = `${indent}}`;
-  return res.join('\n');
+  return `{\n${mapped.join('\n')}\n${indent}}`;
 };
 
 const printToArray = (array, level = 0) => {
@@ -42,10 +39,6 @@ const printToArray = (array, level = 0) => {
   return strArray.join('\n');
 };
 
-const printStylish = (diff) => {
-  const res = ['{', ' ', '}'];
-  res[1] = printToArray(diff);
-  return res.join('\n');
-};
+const printStylish = (diff) => `{\n${printToArray(diff)}\n}`;
 
 export default printStylish;

@@ -24,7 +24,11 @@ const compareObjects = (obj1, obj2) => {
     if (val1 === obj2[key]) {
       return { key, action: 'same', value: val1 };
     }
-    return ({ key, action: 'different', oldValue: val1, value: val2 });
+    return { key, 
+      action: 'different', 
+      oldValue: val1, 
+      value: val2 
+    };
   });
   return _.sortBy(result, (e) => e.key);
 };
