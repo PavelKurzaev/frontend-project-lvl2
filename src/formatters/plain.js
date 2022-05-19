@@ -7,8 +7,8 @@ const makeValue = (object) => {
   return object;
 }
 
-const printToArray = (array, parent = '') => {
-  const mapped = array.map((elem) => {
+const printPlain = (array, parent = '') => {
+  const mapped = array.filter((e) => e.action !== 'same').map((elem) => {
     const value = makeValue(elem.value);
     switch (elem.action) {
       case 'add':
@@ -18,14 +18,12 @@ const printToArray = (array, parent = '') => {
       case 'delete':
         return `Property '${parent}${elem.key}' was removed`;
       case 'nested':
-        return `${printToArray(elem.children, `${parent}${elem.key}.`)}`;
+        return `${printPlain(elem.children, `${parent}${elem.key}.`)}`;
       default:
         break;
     }
   });
   return mapped.join('\n');
 };
-
-const printPlain = (diff) => printToArray(diff).join('\n');
 
 export default printPlain;
