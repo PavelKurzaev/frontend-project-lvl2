@@ -24,7 +24,7 @@ const compareObjects = (obj1, obj2) => {
     if (val1 === obj2[key]) {
       return { key, action: 'same', value: val1 };
     }
-    return { 
+    return {
       key,
       action: 'different',
       oldValue: val1,
