@@ -18,8 +18,8 @@ const printPlain = (array, parent = '') => {
       case 'nested':
         return `${printPlain(elem.children, `${parent}${elem.key}.`)}`;
       default:
-        return `error action`;
-      }
+        return 'error action';
+    }
   });
   return mapped.join('\n');
 };
